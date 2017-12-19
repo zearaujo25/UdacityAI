@@ -123,7 +123,42 @@ def reduce_puzzle(values):
             return False
     return values
 
-sudoku='..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
+def search(values):
+    "Using depth-first search and propagation, create a search tree and solve the sudoku."
+    # First, reduce the puzzle using the previous function
+    
+    # Choose one of the unfilled squares with the fewest possibilities
+    
+    # Now use recursion to solve each one of the resulting sudokus, and if one returns a value (not False), return that answer!
+
+    # If you're stuck, see the solution.py tab!
+    
+    solved=True
+    values=reduce_puzzle(values)
+    
+    #problem with function 
+    if values==False:
+        return False
+    #checking if there is number greater than 9
+    for v in values.values:
+        if len(v)>1:
+            solved=False
+            break
+    #if it is already solvds its over
+    if solved:
+        return values
+    n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+    for digit in values[s]:
+        new_solution=values.copy()
+        new_solution[s]=digit
+        result=search(new_solution)
+        if new_solution:
+            return new_solution
+    
+    return values
+
+
+sudoku='4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
 grid=grid_values(sudoku)
-display(reduce_puzzle(grid))
+display(search(grid))
 
