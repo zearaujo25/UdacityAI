@@ -140,22 +140,27 @@ def search(values):
     if values==False:
         return False
     #checking if there is number greater than 9
-    for v in values.values:
+    for v in values.values():
         if len(v)>1:
             solved=False
             break
-    #if it is already solvds its over
+
     if solved:
+        
         return values
+    #picking the smallest numeber with more than 2 digits
+
     n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+
+
     for digit in values[s]:
         new_solution=values.copy()
         new_solution[s]=digit
         result=search(new_solution)
-        if new_solution:
-            return new_solution
-    
-    return values
+        if result:
+
+            return result
+    return False
 
 
 sudoku='4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
