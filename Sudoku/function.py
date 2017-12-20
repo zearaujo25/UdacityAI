@@ -2,7 +2,6 @@ from utils import *
 
 def grid_values(grid):
     """Convert grid string into {<box>: <value>} dict with '.' value for empties.
-
     Args:
         grid: Sudoku grid in string form, 81 characters long
     Returns:
@@ -46,10 +45,8 @@ def get_peers(k):
 
 def eliminate(values):
     """Eliminate values from peers of each box with a single value.
-
     Go through all the boxes, and whenever there is a box with a single value,
     eliminate this value from the set of values of all its peers.
-
     Args:
         values: Sudoku in dictionary form.
     Returns:
@@ -78,10 +75,8 @@ from utils import *
 
 def only_choice(values):
     """Finalize all values that are the only choice for a unit.
-
     Go through all the units, and whenever there is a unit with a value
     that only fits in one box, assign the value to this box.
-
     Input: Sudoku in dictionary form.
     Output: Resulting Sudoku in dictionary form after filling in only choices.
     """
@@ -161,9 +156,43 @@ def search(values):
 
             return result
     return False
+def generate_test_case(testcase):
+    test=grid_values(testcase)
+    test["E5"]="23"
+    test["E1"]="23"
+    test["B5"]="23"
+    test["I5"]="1345"
+    test["E9"]="1245"
+    return test
 
-
+def naked_twins(values):
+    
+    for k,v in values.items():
+        if len(v)==2:
+            #removving from row
+            for r in row_units:
+                if k in r:
+                    for b in r:
+                        if values[b]==v and k!=b:
+                            for digit in v:
+                                for aux in r:
+                                    if(aux!=b and aux!=k):
+                                        values[aux]=values[aux].replace(digit,"")
+            #removing from column                            
+            for c in column_units:
+                if k in c:
+                    for b in c:
+                        if values[b]==v and k!=b:
+                            for digit in v:
+                                for aux in c:
+                                    if(aux!=b and aux!=k):
+                                        values[aux]=values[aux].replace(digit,"")            
+            
+                                
+    return values
 sudoku='4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-grid=grid_values(sudoku)
-display(search(grid))
+testcase='.................................................................................'
+test=generate_test_case(testcase)
+display(naked_twins(test))
+
 
